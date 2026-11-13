@@ -1,0 +1,145 @@
+{
+  "project": {
+    "id": "prj_jcb_001",
+    "code": "JCB-001",
+    "name": "JCB 220X Heavy Tracked Excavator Production",
+    "client": "JCB Earthmovers India Ltd",
+    "totalBatchQuantity": 4,
+    "unit": "Sets",
+    "status": "in_progress",
+    "deliveryDate": "2026-12-15",
+    "mainAssemblies": [
+      {
+        "id": "asm_arm_01",
+        "code": "ARM-ASM",
+        "name": "Arm Assembly (Working Equipment)",
+        "status": "in_progress",
+        "completedQuantity": 0,
+        "targetQuantity": 4,
+        "subAssemblies": [
+          { "id": "sub_boom_01", "code": "BOOM-01", "name": "Heavy Monoboom Welded Structure", "status": "in_progress" },
+          { "id": "sub_dipper_01", "code": "DIPPER-01", "name": "2.4m Dipper Arm Structure", "status": "pending" },
+          { "id": "sub_bucket_01", "code": "BUCKET-01", "name": "1.2m³ Heavy Duty Rock Bucket", "status": "pending" }
+        ],
+        "boughtOutComponents": [
+          { "id": "bo_cyl_01", "partNo": "PARKER-CYL-160", "description": "160mm Bore Boom Hydraulic Cylinder", "requiredQuantity": 8, "allocatedQuantity": 8, "status": "received" },
+          { "id": "bo_pin_01", "partNo": "PIN-40CR-80", "description": "80mm Induction Hardened 40Cr Pivot Pin Set", "requiredQuantity": 16, "allocatedQuantity": 16, "status": "received" },
+          { "id": "bo_bolt_01", "partNo": "FAST-10.9-M24", "description": "Grade 10.9 M24 Flange Bolt Set", "requiredQuantity": 48, "allocatedQuantity": 48, "status": "received" },
+          { "id": "bo_hose_01", "partNo": "HOSE-4SP-25", "description": "4-Wire Spiral High Pressure Arm Hydraulic Hoses", "requiredQuantity": 16, "allocatedQuantity": 16, "status": "received" }
+        ]
+      }
+    ]
+  },
+  "workflowSteps": [
+    {
+      "id": "drawing_release",
+      "step": 1,
+      "title": "Drawing Release",
+      "role": "Project Manager / Design",
+      "incomingData": "Engineering CAD Model, Drawing Rev A (JCB-ARM-BOOM-001)",
+      "actions": ["Verify CAD tolerances", "Approve Revision A Release Gate"],
+      "outgoingData": "Locked Released Drawing distributed to Stores and Floor",
+      "dialogTarget": "drawing_release"
+    },
+    {
+      "id": "bom_material",
+      "step": 2,
+      "title": "BOM & Material Issue",
+      "role": "Stores Officer",
+      "incomingData": "Released BOM-BCM-SF-001, 15,800 kg IS 2062 E350 Structural Plate",
+      "actions": ["Verify plate stock", "Issue material with Heat No. HT-2026-9921"],
+      "outgoingData": "Material Issue Slip #MIS-2026-0041, Raw plates transferred to Cutting bay",
+      "dialogTarget": "material_issued"
+    },
+    {
+      "id": "cutting",
+      "step": 3,
+      "title": "CNC Cutting & Profiling",
+      "role": "Cutting Operator",
+      "incomingData": "Heat-stamped steel plates, CNC nesting program",
+      "actions": ["CNC plasma/laser profiling", "Record scrap offcut (18.5 kg)", "Upload proof photo"],
+      "outgoingData": "Beveled cut plates, Scrap reconciliation entry, WIP travel card",
+      "dialogTarget": "cutting"
+    },
+    {
+      "id": "fitup",
+      "step": 4,
+      "title": "Fit-Up & Tack Assembly",
+      "role": "Fabrication Operator",
+      "incomingData": "Cut plates, internal diaphragms, welding platen fixture",
+      "actions": ["Clamp & align on jig", "Tack weld diaphragms", "Record root gap check"],
+      "outgoingData": "Tacked boom box structure ready for full penetration welding",
+      "dialogTarget": "fitup"
+    },
+    {
+      "id": "welding",
+      "step": 5,
+      "title": "Welding Bay",
+      "role": "Welder",
+      "incomingData": "Tacked assembly, WPS-JCB-E350-01 welding procedure",
+      "actions": ["Multi-pass MIG/SAW welding", "Execute rework repairs if routed back from QC"],
+      "outgoingData": "Fully welded boom structure with welder ID stamp",
+      "dialogTarget": "welding"
+    },
+    {
+      "id": "inspection",
+      "step": 6,
+      "title": "In-Process QC Inspection",
+      "role": "QC Inspector (ASNT Level II)",
+      "incomingData": "Welded structure, NDT procedure, inspection checklist",
+      "actions": ["Ultrasonic/Visual weld check", "Pass inspection OR Fail with defect photo and route to rework"],
+      "outgoingData": "QC Clearance Green Tag OR Rework Ticket routed back to Welding Bay",
+      "dialogTarget": "inspection"
+    },
+    {
+      "id": "machining",
+      "step": 7,
+      "title": "Machining & Line Boring",
+      "role": "Machinist",
+      "incomingData": "QC-cleared boom, CNC horizontal boring mill",
+      "actions": ["Line bore pivot pin holes to H7 tolerance", "Mill cylinder mounting faces"],
+      "outgoingData": "Machined pivot bores within +0.030mm specification",
+      "dialogTarget": "machining"
+    },
+    {
+      "id": "painting",
+      "step": 8,
+      "title": "Surface Prep & Painting",
+      "role": "Painting Operator",
+      "incomingData": "Machined boom structure, JCB Yellow polyurethane paint",
+      "actions": ["Shot blasting to Sa 2.5", "Apply 120µm DFT protective polyurethane coat"],
+      "outgoingData": "Finished painted boom, DFT report signed off",
+      "dialogTarget": "painting"
+    },
+    {
+      "id": "sub_assembly",
+      "step": 9,
+      "title": "Sub-Assembly Sign-off",
+      "role": "Shop Supervisor",
+      "incomingData": "Finished Boom, Dipper, and Bucket sub-assemblies",
+      "actions": ["Final dimensional sign-off", "Clear sub-assembly for Main Assembly integration"],
+      "outgoingData": "Approved sub-assembly components available for Arm Assembly",
+      "dialogTarget": "assembly_hierarchy"
+    },
+    {
+      "id": "main_assembly",
+      "step": 10,
+      "title": "Main Assembly Integration",
+      "role": "Project Manager / HOD",
+      "incomingData": "Boom + Dipper + Bucket + 4 Bought-Out Component Sets (Cylinders, Pins, Bolts, Hoses)",
+      "actions": ["Verify bought-out parts received", "Assemble complete Arm Assembly", "Click Complete Main Assembly"],
+      "outgoingData": "Integrated ARM-ASM module ready for Excavator mounting",
+      "dialogTarget": "assembly_hierarchy"
+    },
+    {
+      "id": "master_project",
+      "step": 11,
+      "title": "Master JCB-001 Rollup",
+      "role": "Project Manager",
+      "incomingData": "Completed Main Assemblies (Arm, Carriage, Undercarriage, Cabin)",
+      "actions": ["Verify full compliance dossier", "Mark JCB-001 Project Complete", "Export Job Traveler PDF"],
+      "outgoingData": "Completed client delivery, Full immutable traceability audit history",
+      "dialogTarget": "traceability"
+    }
+  ]
+}
